@@ -1,0 +1,36 @@
+name: Weekly Model Retrain
+
+on:
+  schedule:
+    - cron: "0 16 * * 0"  # Sunday 2am AEST (UTC+10) = Sunday 16:00 UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  retrain:
+    name: Retrain and register model
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate / refresh data
+        run: python generate_data.py
+
+      - name: Train new model
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: python -m src.models.train --push-db
+
+      - name: Notify on success
+        if: success()
+        run: echo "Model retrained successfully at $(date '+%Y-%m-%d %H:%M:%S AEST')"
