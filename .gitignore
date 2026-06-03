@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Data — raw CSV not committed (too large / sensitive)
+data/raw/
+data/processed/
+
+# Secrets
+.env
+
+# MLflow local artefacts
+mlruns/
+mlruns.db
+mlruns_local_model_*.pkl
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# pytest
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

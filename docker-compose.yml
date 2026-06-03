@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: churnshield_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: churnshield
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mlflow:
+    image: python:3.11-slim
+    container_name: churnshield_mlflow
+    command: >
+      sh -c "pip install mlflow psycopg2-binary -q &&
+             mlflow server
+               --host 0.0.0.0
+               --port 5000
+               --backend-store-uri postgresql://postgres:password@postgres:5432/churnshield
+               --default-artifact-root /mlflow/artifacts"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_artifacts:/mlflow/artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: churnshield_api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/churnshield
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MODEL_NAME: churn-xgboost
+      CHURN_THRESHOLD: "0.45"
+      HIGH_RISK_THRESHOLD: "0.70"
+    volumes:
+      - ./data:/app/data
+      - mlflow_artifacts:/app/mlflow_artifacts
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: churnshield_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/churnshield
+      API_URL: http://api:8000
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    volumes:
+      - ./data:/app/data
+      - .:/app
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  mlflow_artifacts:
