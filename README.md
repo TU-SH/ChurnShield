@@ -19,7 +19,7 @@ ChurnShield is built specifically for the Australian telco market:
 
 | Layer           |Technology          |Version                | Purpose              | 
 |------------|----------|----------------|---------------------|
-|ML Model            |XGBoost          |2.0.3                |Gradient boosted trees — best for tabular churn data| 
+|ML Model            |XGBoost          |2.0.3                |Gradient boosted trees - best for tabular churn data| 
 |Explainability            |SHAP          |0.45.0                |Per-prediction feature attribution| 
 |Calibration            |Scikit-Learn          |1.4.2                |Platt scaling for probability calibration| 
 |Experiment Tracking            |MLFlow          |2.11.1                |Params, metrics, model registry| 
@@ -34,4 +34,7 @@ ChurnShield is built specifically for the Australian telco market:
 | Numerics | numpy | 1.26.4 | Array operations           |  
 | Containerisation | Docker Compose |  - | 4-service stack           |       
 | Language | Python | 3.11           |   -        | 
+
+## System Architecture 
+<img width="1076" height="1298" alt="image" src="https://github.com/user-attachments/assets/f87da455-e517-4e9b-9a51-4985e984433d" />
 
