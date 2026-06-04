@@ -38,3 +38,7 @@ ChurnShield is built specifically for the Australian telco market:
 ## System Architecture 
 <img width="538" height="649" alt="image" src="https://github.com/user-attachments/assets/d807d8f1-59d5-48e0-bb18-5ca1b481e637" />
 
+## How a prediction works - step by step
+<img width="538" height="649" alt="image" src="https://github.com/user-attachments/assets/b0c88088-27d8-429f-a4be-08bf9033da4c" />
+
+
