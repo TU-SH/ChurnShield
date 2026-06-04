@@ -36,5 +36,5 @@ ChurnShield is built specifically for the Australian telco market:
 | Language | Python | 3.11           |   -        | 
 
 ## System Architecture 
-<img width="895" height="1080" alt="image" src="https://github.com/user-attachments/assets/d807d8f1-59d5-48e0-bb18-5ca1b481e637" />
+<img width="717" height="864" alt="image" src="https://github.com/user-attachments/assets/d807d8f1-59d5-48e0-bb18-5ca1b481e637" />
 
