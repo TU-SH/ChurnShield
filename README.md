@@ -99,9 +99,18 @@ Top 5 features ranked by mean absolute SHAP value:
 |4     | `account_length_days`  | Customer tenure | ↑ Longer = less likely to churn| 
 |5      | `voicemail_plan`   | Has voicemail plan  | ↓ Reduces churn risk |
 
-## Sample API Response 
+**Sample API Response** 
 
 <img width="385" height="265" alt="image" src="https://github.com/user-attachments/assets/aac19be3-e8a1-4b3a-b4e9-771c5efa3782" />
+
+**Reading the SHAP values**:
+
+- `customer_service_calls`: +0.2341 → this customer's 5 CS calls pushed churn probability up by 23.4 percentage points
+- `account_length_days`: -0.0912 → their 3-year tenure pushed it down by 9.1 percentage points
+  
+Every prediction is explainable, auditable, and logged to PostgreSQL
+
+
 
 
 
