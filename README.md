@@ -36,6 +36,12 @@ ChurnShield is built specifically for the Australian telco market:
 | Language | Python | 3.11           |   -        | 
 
 ## System Architecture 
+
+ChurnShield has five layers that talk to each other in one direction:
+- Data comes in from a CSV file or Kaggle dataset. A Python script cleans and maps it into the right format, then writes it to PostgreSQL. PostgreSQL holds three schemas: raw customer records, engineered features, and a predictions audit log.
+- From PostgreSQL, two things happen in parallel: The training pipeline reads the data, builds the model, and saves it as a `.pkl` file - every run is tracked in MLflow with its parameters, CV AUC score, and SHAP importance. The FastAPI server loads that `.pkl` file on startup and serves predictions through REST endpoints. Every prediction it makes gets logged back to PostgreSQL with the full SHAP breakdown stored as JSONB.
+- The Streamlit dashboard sits on top — it reads from PostgreSQL for the Overview, Cohort, and Explain pages, and calls the FastAPI directly for the Live Predict page.
+
 <img width="538" height="649" alt="image" src="https://github.com/user-attachments/assets/d807d8f1-59d5-48e0-bb18-5ca1b481e637" />
 
 ## How a prediction works - step by step
