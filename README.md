@@ -52,7 +52,7 @@ A customer record hits POST /predict and six things happen in under 50 milliseco
 
 - **Feature engineering**: the 19 raw fields get transformed into 26 features. Key ones: `cs_call_ratio` (customer service calls divided by account age — the strongest churn signal), `total_charge_aud` (sum of all usage charges), `state_encoded` (NSW=0, VIC=1, etc.), and `high_day_usage` (a flag if day minutes exceed the 75th percentile of training data).
   
--**XGBoost + calibration**: the feature vector goes into the trained XGBoost model, which outputs a raw score. Platt scaling converts that score into a true probability between 0 and 1. 
+- **XGBoost + calibration**: the feature vector goes into the trained XGBoost model, which outputs a raw score. Platt scaling converts that score into a true probability between 0 and 1. 
 - **SHAP**: the SHAP TreeExplainer computes how much each feature pushed the probability up or down for this specific customer. A `high cs_call_ratio` might add +0.23; a long tenure might subtract -0.09.
 -**Risk segment**: the probability is bucketed: below 0.45 is LOW, 0.45–0.70 is MEDIUM, above 0.70 is HIGH. These thresholds were tuned for the real AU telco churn rate of ~14%.
 - Two things happen simultaneously: the response goes back to the caller with the probability, risk segment, and top 5 SHAP factors. At the same time, the full prediction including all SHAP values is written to `ml.predictions` as a permanent audit record.
