@@ -41,8 +41,20 @@ ChurnShield is built specifically for the Australian telco market:
 ## How a prediction works - step by step
 <img width="538" height="649" alt="image" src="https://github.com/user-attachments/assets/b0c88088-27d8-429f-a4be-08bf9033da4c" />
 
+
 ## Training Pipeline - step by step 
 <img width="538" height="649" alt="image" src="https://github.com/user-attachments/assets/143ce136-7233-4019-8ff3-e00086e15e26" />
+
+
+## Model performance
+| Metric                | Value                 | Notes              | 
+|-----------------|------------------|--------------|
+| CV AUC-ROC (5-fold stratified)                | 0.924 ± 0.011                 |Primary metric              | 
+| Churn threshold                |0.45                  |Tuned for AU telco              | 
+| High-risk threshold                | 0.70                 | Triggers retention action              | 
+|API latency                 |< 50ms                  | Single prediction             |
+| Batch throughput                | 500 customers per request                 |  -            |
+| Test suite                | 27 passed                  | 0 failures             |
 
 
 
